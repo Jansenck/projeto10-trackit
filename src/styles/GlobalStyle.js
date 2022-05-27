@@ -33,6 +33,8 @@ const GlobalStyle = createGlobalStyle`
         background-color: #e5e5e5;
         display: flex;
         justify-content: center;
+        font-family: 'Lexend Deca', sans-serif;
+        font-weight: 400;
     }
     ol, ul {
         list-style: none;
