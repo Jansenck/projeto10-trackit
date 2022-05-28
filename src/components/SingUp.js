@@ -1,24 +1,52 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import BigLogo from "./BigLogo";
+import UserContext from './contexts/UserContext';
 
 export default function SingUp(){
+
+    const {userData, setUserData} = useContext(UserContext);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [image, setImage] = useState('');
+
+    function postUserData(event){
+
+        event.preventDefault();
+        
+        setUserData({...userData, email, name, image, password});
+
+        const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', {
+            email: email,
+            name: name,
+            image: image,
+            password: password
+        });
+        promisse.then((res) => console.log(res.data));
+        promisse.catch(() => console.log('Deu ruim aqui'));
+    }
 
     return(
         <>
             <BigLogo/>
             <Container>
-                <Form>
-                    <input type="email" placeholder="email"/>
-                    <input type="password" placeholder="senha"/>
-                    <input type="text" placeholder="nome"/>
-                    <input type="url" placeholder="foto"/>
-                </Form>
-                <Button>{"Cadastrar"}</Button>
+                <form onSubmit={postUserData}>
+                    <input type="email" required placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="password" required placeholder="senha"  value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <input type="text" required placeholder="nome"  value={name} onChange={(e) => setName(e.target.value)}/>
+                    <input type="url" required placeholder="foto" value={image} onChange={(e) => setImage(e.target.value)}/>
+                    <Button type="submit">
+                        <Link to="/" style={linkStyle}>
+                            <p>Cadastrar</p>
+                        </Link>
+                    </Button>
+                </form>
             </Container>
-            <Link to="/">
+            <Link to="/" style={linkStyle}>
                 {"Já tem uma conta? Faça login!"}
             </Link>
         </>
@@ -33,7 +61,6 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-
     margin-bottom: 8%;
 
 `;
@@ -61,3 +88,9 @@ const Button = styled.button`
     font-size: 20px;
     color: #FFFFFF;
 `;
+
+const linkStyle = {
+    textDecoration: 'none',
+    fontSize: '20px',
+    color: '#FFFFFF'
+}

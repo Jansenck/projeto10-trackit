@@ -1,24 +1,45 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import BigLogo from "./BigLogo";
 
 export default function SingIn(){
 
+    const[loginEmail, setLoginEmail] = useState('');
+    const[loginPassword, setLoginPassword] = useState('');
+
+    function postLoginData(event){
+
+        event.preventDefault();
+
+        const body = {
+            email: loginEmail,
+            password: loginPassword
+        }
+
+        const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', body);
+
+        promisse.then((res) => console.log(res.data.token));
+        promisse.catch(() => {})
+    }
+
     return(
         <>
             <BigLogo/>
             <Container>
-                <Form>
-                    <input type="email" placeholder="email"/>
-                    <input type="password" placeholder="senha"/>
+                <Form onSubmit={postLoginData}>
+                    <input type="email" required placeholder="email"  value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)}/>
+                    <input type="password" required placeholder="senha"  value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}/>    
+                    <Button type="submit">
+                        <Link to="/hoje" style={linkStyle}>
+                            <p>Entrar</p>
+                        </Link>
+                    </Button>
                 </Form>
-                <Link to="/habitos">
-                    <Button>{"Entrar"}</Button>
-                </Link>
             </Container>
-            <Link to="/cadastro">
+            <Link to="/cadastro" style={{color: '#52B6FF'}}>
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
         </>
@@ -51,12 +72,21 @@ const Form = styled.form`
             font-size: 20px;
             color:#DBDBDB;
         }
+        p{
+            height: 100%;
+            width: 100%;
+            border-radius: 5px;
+        }
 `;
 
 const Button = styled.button`
     height: 6vh;
     width: 80vw;
     background-color: #52B6FF;
-    font-size: 20px;
-    color: #FFFFFF;
 `;
+
+const linkStyle = {
+    textDecoration: 'none',
+    fontSize: '20px',
+    color: '#FFFFFF'
+}

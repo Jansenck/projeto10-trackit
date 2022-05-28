@@ -10,9 +10,11 @@ import Today from './Today';
 import History from './History';
 
 import UserContext from './contexts/UserContext';
+import HabitsContext from './contexts/HabitsContext'
 
 export default function App(){
 
+    const [userData, setUserData] = useState({});
     const [habits, setHabits] = useState([]);
 
     return(
@@ -20,15 +22,17 @@ export default function App(){
         <Container>
             <BrowserRouter>
                 <GlobalStyle/>
-                <UserContext.Provider value={{habits, setHabits}}>
-                    <Routes>
-                        <Route path={"/"} element={<SingIn/>}/>
-                        <Route path={"/cadastro"} element={<SingUp/>}/>
-                        <Route path={"/habitos"} element={<Habits/>}/>
-                        <Route path={"/hoje"} element={<Today/>}/>
-                        <Route path={"/historico"} element={<History/>}/>
-                    </Routes>
-                </UserContext.Provider>   
+                <HabitsContext.Provider value={{habits, setHabits}}>
+                    <UserContext.Provider value={{userData, setUserData}}>
+                        <Routes>
+                            <Route path={"/"} element={<SingIn/>}/>
+                            <Route path={"/cadastro"} element={<SingUp/>}/>
+                            <Route path={"/habitos"} element={<Habits/>}/>
+                            <Route path={"/hoje"} element={<Today/>}/>
+                            <Route path={"/historico"} element={<History/>}/>
+                        </Routes>
+                    </UserContext.Provider>
+                </HabitsContext.Provider>  
             </BrowserRouter>
         </Container>
     );

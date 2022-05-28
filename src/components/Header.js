@@ -1,11 +1,17 @@
+import {useContext} from 'react';
+
 import styled from 'styled-components';
 import logo from '../image/logo.png';
+import UserContext from './contexts/UserContext';
 
 export default function Header(){
+
+    const {userData} = useContext(UserContext);
+
     return(
         <Head>
             <img src={logo} alt="logo"/>
-            <User src={logo}/>
+            <User src={userData.image}/>
         </Head>
     );
 }

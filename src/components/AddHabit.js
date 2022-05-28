@@ -5,6 +5,15 @@ import styled from 'styled-components';
 export default function AddHabit(){
 
     const [newHabit, setNewHabit] = useState([]);
+    const [save, setSave] = useState(true);
+
+    function buttonSave(){
+        setSave(false);
+
+        return(
+            <Buttons save={save}/>
+        );
+    }
 
     function addHabit(){
         setNewHabit([...newHabit,
@@ -24,7 +33,7 @@ export default function AddHabit(){
         </form>
         <Buttons>
             <Cancel>Cancelar</Cancel>
-            <Save>Salvar</Save>
+            <Save onClick={buttonSave}>Salvar</Save>
         </Buttons>
         </ConfigureHabit>]
         );
@@ -129,6 +138,7 @@ const Buttons = styled.div`
     position: absolute;
     bottom: 15px;
     right: -7px;
+    style: ${props => props.save};
 `;
 
 const Save = styled.button`
