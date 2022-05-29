@@ -3,6 +3,7 @@ import { CircularProgressbarWithChildren, buildStyles, CircularProgressbar } fro
 import { CirclesWithBar } from 'react-loader-spinner';
 
 import styled from 'styled-components';
+import { CenturyView } from 'react-calendar';
 
 export default function Footer(){
 
@@ -11,30 +12,20 @@ export default function Footer(){
             <Link to="/habitos" style={linkStyle}>
                 <p>Hábitos</p>
             </Link>
-            <div style={{ width: '100px', height: '100px' }}>
+            <div style={{ width: '100px', height: '100px'}}>
                 <Link to="/hoje" style={linkStyle}>
                     <CircularProgressbar
                         value={60}
                         text={'Hoje'}
                         background={true}
                         backgroundPadding={6} 
-                        styles={{
-                            root:{},
-                            text:{
-                                transform:'translate(-24px, 6px)',
-                                textColor: "#fff",
-                            },
-                            path:{
-                                stroke: '#FFFFFF',
-                                strokeLinecap: 'round',
-                            },
-                            background:{
-                                fill: '#52B6FF',
-                            },
-                            trail:{
-                                stroke: 'transparent'
-                            }
-                    }}/>
+                        styles={buildStyles({
+                            textColor: 'white',
+                            backgroundColor: '#52B6FF',
+                            pathColor: 'white',
+                            trailColor: 'transparent'
+                        })}
+                    />
                 </Link>
             </div>
             <Link to="/historico" style={linkStyle}>

@@ -5,7 +5,10 @@ import styled from 'styled-components';
 export default function AddHabit(){
 
     const [newHabit, setNewHabit] = useState([]);
+    const [days, setDays] = useState([]);
     const [save, setSave] = useState(true);
+
+    console.log(days)
 
     function buttonSave(){
         setSave(false);
@@ -15,20 +18,24 @@ export default function AddHabit(){
         );
     }
 
+    function add(prop){
+        setDays([...days, prop])
+    }
+
     function addHabit(){
         setNewHabit([...newHabit,
 
         <ConfigureHabit>
         <form>
-            <input type="text" placeholder="nome do hábito"/>
+            <input key="name" type="text" placeholder="nome do hábito"/>
             <Days>
-                <div id="sunday">D</div>
-                <div id="monday">S</div>
-                <div id="tuesday">T</div>
-                <div id="wednesday">Q</div>
-                <div id="thursday">Q</div>
-                <div id="friday">S</div>
-                <div id="saturday">S</div>
+                <div key="sunday" id="0" onClick={() => add('0')} >D</div>
+                <div key="monday" id="1" onClick={() => setDays([...days, 1])} >S</div>
+                <div key="tuesday" id="2" onClick={() => setDays([...days, 2])} >T</div>
+                <div key="wednesday" id="3" onClick={() => setDays([...days, 3])} >Q</div>
+                <div key="thursday" id="4" onClick={() => setDays([...days, 4])} >Q</div>
+                <div key="friday" id="5" onClick={() => setDays([...days, 5])} >S</div>
+                <div key="saturday" id="6" onClick={() => setDays([...days, 6])} >S</div>
             </Days>
         </form>
         <Buttons>

@@ -27,12 +27,12 @@ export default function SingUp(){
 
         event.preventDefault();
 
-        {(enableButton)?
+        (enableButton)?
 
             <p>Cadastrar</p>
         :
             setButtonContent(<ThreeDots color="#FFFFFF" height={80} width={80} />)
-        }
+        
         
         setUserData({email, name, image, password});
         

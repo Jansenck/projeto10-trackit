@@ -9,6 +9,31 @@ import check from '../image/check.png'
 
 export default function Today(){
 
+    const [saveButtonColor, setSaveButtonColor] = useState("#EBEBEB");
+    const [validateButton, setValidateButton] = useState(false);
+
+    function saveHabit(){
+
+        setValidateButton(!validateButton);
+        
+        if(validateButton === false){
+            
+            setSaveButtonColor("#8FC549");
+            return(
+    
+               <Check  saveButtonColor={saveButtonColor}/>
+            );
+        } else if(validateButton !== false){
+
+            setSaveButtonColor("#EBEBEB");
+            return(
+    
+               <Check  saveButtonColor={saveButtonColor}/>
+            );
+        }
+
+    }
+
     return(
         <>  <Header/>
             <Date>
@@ -25,7 +50,7 @@ export default function Today(){
                         <p>Seu recorde: 5 dias</p>
                     </Days>
                 </Habit>
-                <Check>
+                <Check saveButtonColor={saveButtonColor} onClick={saveHabit}>
                     <img src={check} alt="check"/>
                 </Check>
             </ConfigureHabit> 
@@ -93,10 +118,10 @@ const Days = styled.div`
     font-size: 13px;
 `;
 
-const Check = styled.div`
+const Check = styled.button`
     height:100%;
     width: 70px;
-    background-color:#8FC549;
+    background-color: ${props => props.saveButtonColor};
     border-radius: 5px;
 
     display: flex;

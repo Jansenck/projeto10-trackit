@@ -46,7 +46,10 @@ export default function SingIn(){
             
             setToken(res.data.token)
 
-            const serializeUserData = JSON.stringify(userData);
+            const {id, name, image, email, token} = res.data;
+            const localData = {id, name, image, email, token}
+
+            const serializeUserData = JSON.stringify(localData);
             localStorage.setItem('localUserData', serializeUserData);
 
             navigate('/hoje')
@@ -66,7 +69,6 @@ export default function SingIn(){
                     <input type="email" placeholder="email"  value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required/>
                     <input type="password" placeholder="senha"  value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required/>    
                     <Button type="submit" style={linkStyle}>
-                
                             {buttonContent}
                     </Button>
                 </Form>
