@@ -1,18 +1,39 @@
-import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import { ThreeDots } from 'react-loader-spinner';
+import styled from 'styled-components';
 import axios from 'axios';
 
 import BigLogo from "./BigLogo";
+import UserContext from './contexts/UserContext';
 
 export default function SingIn(){
+
+    let navigate = useNavigate();
+
+    const {userData, setUserData} = useContext(UserContext);
+    const {token, setToken} = useContext(UserContext);
+
 
     const[loginEmail, setLoginEmail] = useState('');
     const[loginPassword, setLoginPassword] = useState('');
 
-    function postLoginData(event){
+    const[buttonContent, setButtonContent] = useState("Entrar");
+    const [nextPage, setNextPage] = useState("");
 
+
+    function postLoginData(event){
+        
         event.preventDefault();
+
+        {(token)?
+
+            <p>Entrar</p>
+        :
+            setButtonContent(<ThreeDots color="#FFFFFF" height={80} width={80} />)
+        }
+
 
         const body = {
             email: loginEmail,
@@ -21,8 +42,20 @@ export default function SingIn(){
 
         const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', body);
 
-        promisse.then((res) => console.log(res.data.token));
-        promisse.catch(() => {})
+        promisse.then((res) => {
+            
+            setToken(res.data.token)
+
+            const serializeUserData = JSON.stringify(userData);
+            localStorage.setItem('localUserData', serializeUserData);
+
+            navigate('/hoje')
+            
+        });
+        promisse.catch(
+
+        )
+
     }
 
     return(
@@ -30,12 +63,11 @@ export default function SingIn(){
             <BigLogo/>
             <Container>
                 <Form onSubmit={postLoginData}>
-                    <input type="email" required placeholder="email"  value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)}/>
-                    <input type="password" required placeholder="senha"  value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}/>    
-                    <Button type="submit">
-                        <Link to="/hoje" style={linkStyle}>
-                            <p>Entrar</p>
-                        </Link>
+                    <input type="email" placeholder="email"  value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required/>
+                    <input type="password" placeholder="senha"  value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required/>    
+                    <Button type="submit" style={linkStyle}>
+                
+                            {buttonContent}
                     </Button>
                 </Form>
             </Container>
@@ -71,6 +103,8 @@ const Form = styled.form`
             border-radius: 5px;
             font-size: 20px;
             color:#DBDBDB;
+
+            //PARA DESABILITAR OS INPUTS
         }
         p{
             height: 100%;
@@ -83,6 +117,10 @@ const Button = styled.button`
     height: 6vh;
     width: 80vw;
     background-color: #52B6FF;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    //PARA DESABILITAR O BOTÃO
 `;
 
 const linkStyle = {

@@ -6,12 +6,23 @@ import UserContext from './contexts/UserContext';
 
 export default function Header(){
 
+    
     const {userData} = useContext(UserContext);
+    const {token, setToken} = useContext(UserContext);
+    
+    const serializedUsedData = localStorage.getItem("localUserData");
+    const localUserData = JSON.parse(serializedUsedData);
+
+    function renderUserImage(){
+        return(
+            localUserData.image
+        );
+    }
 
     return(
         <Head>
             <img src={logo} alt="logo"/>
-            <User src={userData.image}/>
+            <User src={renderUserImage()}/>
         </Head>
     );
 }

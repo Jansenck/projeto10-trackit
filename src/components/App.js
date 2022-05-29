@@ -15,6 +15,7 @@ import HabitsContext from './contexts/HabitsContext'
 export default function App(){
 
     const [userData, setUserData] = useState({});
+    const[token, setToken] = useState(null);
     const [habits, setHabits] = useState([]);
 
     return(
@@ -23,7 +24,7 @@ export default function App(){
             <BrowserRouter>
                 <GlobalStyle/>
                 <HabitsContext.Provider value={{habits, setHabits}}>
-                    <UserContext.Provider value={{userData, setUserData}}>
+                    <UserContext.Provider value={{userData, setUserData, token, setToken}}>
                         <Routes>
                             <Route path={"/"} element={<SingIn/>}/>
                             <Route path={"/cadastro"} element={<SingUp/>}/>

@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom';
 import { CircularProgressbarWithChildren, buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import { CirclesWithBar } from 'react-loader-spinner';
 
@@ -7,31 +8,38 @@ export default function Footer(){
 
     return(
         <NavBar>
-            <p>Hábitos</p>
-            <div style={{ width: 100, height: 100 }}>
-                <CircularProgressbar
-                    value={60}
-                    text={'Hoje'}
-                    background={true}
-                    backgroundPadding={6} 
-                    styles={{
-                        root:{},
-                        text:{
-                            transform:'translate(-24px, 6px)',
-                        },
-                        path:{
-                            stroke: '#FFFFFF',
-                            strokeLinecap: 'round',
-                        },
-                        background:{
-                            fill: '#52B6FF',
-                        },
-                        trail:{
-                            stroke: 'transparent'
-                        },
-                }}/>
+            <Link to="/habitos" style={linkStyle}>
+                <p>Hábitos</p>
+            </Link>
+            <div style={{ width: '100px', height: '100px' }}>
+                <Link to="/hoje" style={linkStyle}>
+                    <CircularProgressbar
+                        value={60}
+                        text={'Hoje'}
+                        background={true}
+                        backgroundPadding={6} 
+                        styles={{
+                            root:{},
+                            text:{
+                                transform:'translate(-24px, 6px)',
+                                textColor: "#fff",
+                            },
+                            path:{
+                                stroke: '#FFFFFF',
+                                strokeLinecap: 'round',
+                            },
+                            background:{
+                                fill: '#52B6FF',
+                            },
+                            trail:{
+                                stroke: 'transparent'
+                            }
+                    }}/>
+                </Link>
             </div>
-            <p>Histórico</p>
+            <Link to="/historico" style={linkStyle}>
+                <p>Histórico</p>
+            </Link>
         </NavBar>
     );
 }
@@ -64,3 +72,9 @@ const  NavBar = styled.footer`
         }
 
 `;
+
+const linkStyle = {
+    textDecoration: 'none',
+    fontSize: '20px',
+    color: '#FFFFFF'
+}
