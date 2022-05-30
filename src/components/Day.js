@@ -2,12 +2,12 @@ import styled from 'styled-components'
 
 export default function Day(props){
 
-    const {key, id, isSelected, selectingDay, selectedDays} = props;
-
+    const {key, index, day, isSelected, selectingDay, selectedDays} = props;
+    console.log("to em day")
 
     return(
-        <Button>
-            { "A"}
+        <Button index={index} isSelected={isSelected}>
+            {day}
         </Button>
     )
 }
@@ -18,6 +18,12 @@ function colorDay(isSelected, selectedDays){
 }
 
 const Button = styled.button`
+
+    height: 30px;
+    width: 30px;
+
+    background-color: red;
+
     display: flex;
     justify-content: center;
     align-items: center;

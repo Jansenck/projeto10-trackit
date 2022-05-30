@@ -22,24 +22,31 @@ export default function AddHabit(){
         );
     }
 
-    function toggleDay(){
+    function toggleDay(index){
 
+        const selected = selectedDays.some(day => day === index);
+            if(!selected) {
+                setSelectedDays([...selectedDays, index]);
+            } else {
+                const newDay = selectedDays.filter(day => day !== index);
+                setSelectedDays(newDay);
+            }
     }
 
     function renderDays(){
+        console.log("render day")
         
-        return days.map((day, index )=> {
-
-            
-            <Day 
+        return (days.map((day, index )=> {
+         
+            return(<Day 
                 key={index} 
-                id={index}  
+                id={index}
+                day={day}  
                 isSelected={isSelected}
                 selectedDays={selectedDays}
-                selectingDay={(id) => toggleDay(id)}
-            />
-        })
-
+                selectingDay={(index) => toggleDay(index)}
+            />)
+        }));
     }
 
     const weekDays = renderDays();
@@ -133,6 +140,7 @@ const ConfigureHabit = styled.div`
 
 const Days = styled.div`
     width: 75%;
+    height: 30px;
 
     display: flex;
     flex-direction: row;
