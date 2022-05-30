@@ -1,11 +1,15 @@
 import {useState} from 'react';
 import styled from 'styled-components';
 
+import Day from './Day';
+
 
 export default function AddHabit(){
 
     const [newHabit, setNewHabit] = useState([]);
-    const [days, setDays] = useState([]);
+    const days = ["D", "S", "T", "Q", "Q", "S", "S"];
+    const [isSelected, setIsSelected] = useState(false);
+    const [selectedDays, setSelectedDays] = useState([]);
     const [save, setSave] = useState(true);
 
     console.log(days)
@@ -18,24 +22,36 @@ export default function AddHabit(){
         );
     }
 
-    function add(prop){
-        setDays([...days, prop])
+    function toggleDay(){
+
     }
+
+    function renderDays(){
+        
+        return days.map((day, index )=> {
+
+            
+            <Day 
+                key={index} 
+                id={index}  
+                isSelected={isSelected}
+                selectedDays={selectedDays}
+                selectingDay={(id) => toggleDay(id)}
+            />
+        })
+
+    }
+
+    const weekDays = renderDays();
 
     function addHabit(){
         setNewHabit([...newHabit,
 
-        <ConfigureHabit>
+        <ConfigureHabit key={newHabit.length}>
         <form>
             <input key="name" type="text" placeholder="nome do hábito"/>
             <Days>
-                <div key="sunday" id="0" onClick={() => add('0')} >D</div>
-                <div key="monday" id="1" onClick={() => setDays([...days, 1])} >S</div>
-                <div key="tuesday" id="2" onClick={() => setDays([...days, 2])} >T</div>
-                <div key="wednesday" id="3" onClick={() => setDays([...days, 3])} >Q</div>
-                <div key="thursday" id="4" onClick={() => setDays([...days, 4])} >Q</div>
-                <div key="friday" id="5" onClick={() => setDays([...days, 5])} >S</div>
-                <div key="saturday" id="6" onClick={() => setDays([...days, 6])} >S</div>
+                {weekDays}
             </Days>
         </form>
         <Buttons>
@@ -121,21 +137,6 @@ const Days = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
-        div{
-            height: 30px;
-            width: 30px;
-
-            border: 1px solid #D5D5D5;
-            border-radius: 5px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            font-size: 18px;
-            color: #D5D5D5;
-        }
 `;
 
 const Buttons = styled.div`

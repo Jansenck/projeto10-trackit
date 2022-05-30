@@ -15,6 +15,8 @@ export default function Today(){
     function saveHabit(){
 
         setValidateButton(!validateButton);
+
+        console.log(validateButton)
         
         if(validateButton === false){
             
