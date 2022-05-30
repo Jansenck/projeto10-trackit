@@ -13,8 +13,6 @@ export default function Header(){
     const serializedUsedData = localStorage.getItem("localUserData");
     const localUserData = JSON.parse(serializedUsedData);
 
-    console.log(localUserData)
-
     return(
         <Head>
             <img src={logo} alt="logo"/>
