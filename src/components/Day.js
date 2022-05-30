@@ -2,35 +2,46 @@ import styled from 'styled-components'
 
 export default function Day(props){
 
-    const {key, index, day, isSelected, selectingDay, selectedDays} = props;
-    console.log("to em day")
+    const {key, index, day, setSelectedDays, selectedDay} = props;
+
+    function selectDay(){
+        setSelectedDays(index);
+    }
 
     return(
-        <Button index={index} isSelected={isSelected}>
+        <Button 
+            key={key} 
+            index={index} 
+            day={day} 
+            selectedDay={selectedDay} 
+            onClick={selectDay}
+            >
             {day}
         </Button>
     )
 }
 
-function colorDay(isSelected, selectedDays){
-    if(isSelected) return "#D5D5D5"
-    else if(!isSelected) return "#FFFFFF"
+
+
+function colorDay(selectedDay){
+    console.log('entrei em colorday')
+    if(selectedDay) return "#000"
+    else return "#FFFFFF"
 }
 
 const Button = styled.button`
-
-    height: 30px;
-    width: 30px;
-
-    background-color: red;
+    height: 100%;
+    width: 100%;
 
     display: flex;
     justify-content: center;
     align-items: center;
     
-    background-color: ${props => colorDay(props.isSelected, props.selectedDays)};
+    background-color: ${({selectedDay}) => colorDay(selectedDay)};
+                    
     border: 1px solid #D5D5D5;
     border-radius: 5px;
     font-size: 18px;
     color: #D5D5D5;
+    
 `;

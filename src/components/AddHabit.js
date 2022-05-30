@@ -8,11 +8,13 @@ export default function AddHabit(){
 
     const [newHabit, setNewHabit] = useState([]);
     const days = ["D", "S", "T", "Q", "Q", "S", "S"];
+
     const [isSelected, setIsSelected] = useState(false);
+
     const [selectedDays, setSelectedDays] = useState([]);
     const [save, setSave] = useState(true);
 
-    console.log(days)
+    console.log(selectedDays)
 
     function buttonSave(){
         setSave(false);
@@ -25,28 +27,35 @@ export default function AddHabit(){
     function toggleDay(index){
 
         const selected = selectedDays.some(day => day === index);
-            if(!selected) {
-                setSelectedDays([...selectedDays, index]);
-            } else {
-                const newDay = selectedDays.filter(day => day !== index);
-                setSelectedDays(newDay);
-            }
+
+        if(!selected){
+         
+            setSelectedDays([...selectedDays, index]);
+
+        } else{
+            const newDay = selectedDays.filter(day => day !== index);
+            setSelectedDays(newDay);
+        }
+
     }
 
     function renderDays(){
-        console.log("render day")
         
-        return (days.map((day, index )=> {
-         
-            return(<Day 
-                key={index} 
-                id={index}
-                day={day}  
-                isSelected={isSelected}
-                selectedDays={selectedDays}
-                selectingDay={(index) => toggleDay(index)}
-            />)
-        }));
+        return days.map((day, index )=> { 
+
+            const selected = selectedDays.some(day => day === index);
+            
+            return(
+                <Day 
+                    
+                    index={index}
+                    day={day}  
+                    setSelectedDays={setSelectedDays}
+                    selectedDay={selected}
+                    selectingDay={(day, index) => toggleDay(index)}
+                />)
+        })
+
     }
 
     const weekDays = renderDays();
@@ -55,7 +64,8 @@ export default function AddHabit(){
         setNewHabit([...newHabit,
 
         <ConfigureHabit key={newHabit.length}>
-        <form>
+
+        <form onSubmit={(e) => { e.preventDefault()}}>
             <input key="name" type="text" placeholder="nome do hábito"/>
             <Days>
                 {weekDays}
@@ -140,7 +150,6 @@ const ConfigureHabit = styled.div`
 
 const Days = styled.div`
     width: 75%;
-    height: 30px;
 
     display: flex;
     flex-direction: row;
