@@ -29,7 +29,7 @@ export default function Habit(){
             setHabits(response.data);
             
         });
-        promisse.catch(() => window.alert("Algo deu errado... Tente novamente."));
+        promisse.catch(() => window.alert("deu ruim..."));
 
     },[]);
 
@@ -38,7 +38,9 @@ export default function Habit(){
         habits.map((habit, id)=>{
             <SessionHabit key={id}>
                 <h1>habit.name</h1>
-                
+                <Days key={id}>
+                    {habit.days.map((day, index) => <RenderDays day={day} key={index}/>)}
+                </Days>
             </SessionHabit>
         })
         
@@ -46,6 +48,8 @@ export default function Habit(){
 }
 
 function RenderDays(day, index, selectedDay, habit){
+
+    console.log(habit)
     
     return (
         <Day
