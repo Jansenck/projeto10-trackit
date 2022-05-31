@@ -1,53 +1,59 @@
 import {useState, useContext} from 'react';
-import { useEffect } from 'react';
 
 import axios from 'axios';
 import styled from 'styled-components';
 
-import Day from './Day';
-import UserContext from './contexts/UserContext';
+import HabitsContext from './contexts/HabitsContext';
 
 
 export default function AddHabit(){
     const [openForm, setOpenForm] = useState(false);
+    const [habitCreated, setHabitCreated] = useState(false);
+
     const [habitName, setHabitName] = useState('');
     const [habitDays, setHabitDays] = useState([]);
     const [newHabit, setNewHabit] = useState([]);
     const days = ["D", "S", "T", "Q", "Q", "S", "S"];
 
     const [selectedDays, setSelectedDays] = useState([]);
-    const [save, setSave] = useState(true);
+    const [enableButton, setEnableButton] = useState(false);
+
+    const {habits, setHabits} = useContext(HabitsContext);
 
     const serializedUsedData = localStorage.getItem("localUserData");
     const localUserData = JSON.parse(serializedUsedData);
+
+    const body = {
+        name: habitName,
+        days: selectedDays
+    }
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${localUserData.token}`
+        }
+    }
 
     function buttonSave(event){
         
         event.preventDefault();
 
-        const habit = {
-            name:habitName,
-            days:selectedDays
-        }
+        //(enableButton)?
 
-        setNewHabit([...newHabit, habit]);
+            //<p>Cadastrar</p>
+        //:
+            //setButtonContent(<ThreeDots color="#FFFFFF" height={80} width={80} />)
 
-        const body = newHabit;
+        setNewHabit(body);
 
-        console.log(habit)
-        console.log(newHabit)
+        const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', body, config);
 
-        
+        promisse.then(() => {
 
-        const config = {
-            headers: {
-                "Authorization": `${localUserData.token}`
-            }
-        }
+            setOpenForm(!openForm);
+        });
+        promisse.catch(() => setEnableButton(true));
 
-        const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', body, config);
-
-        console.log(habit)
     }
 
     function toggleDay(selected, index){
@@ -58,7 +64,7 @@ export default function AddHabit(){
             const newDay = selectedDays.filter(day => day !== index);
             setSelectedDays(newDay);
         }
-        console.log(newHabit)
+        
     }
 
     // const weekDays = renderDays(selectedDays);
@@ -97,7 +103,15 @@ function DiaDaSemana({toggleDay, day, index}) {
 const Divao = styled.div`
     width: 30px;
     height: 30px;
-    background-color: ${({selected}) => selected ? 'black' : 'red'}
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: ${({selected}) => selected ? "#D5D5D5" : "#FFFFFF"};
+    color:${({selected}) => selected ? "#FFFFFF" : "#D5D5D5"};
+    border: 1px solid #D5D5D5;
+    border-radius: 3px;
 `;
 const MyHabits = styled.div`
     height: 10vh;

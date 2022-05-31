@@ -17,13 +17,15 @@ export default function App(){
     const [userData, setUserData] = useState({});
     const[token, setToken] = useState(null);
     const [habits, setHabits] = useState([]);
+    const [thereIsHabits, setThereIsHabits] = useState(false);
+
 
     return(
 
         <Container>
             <BrowserRouter>
                 <GlobalStyle/>
-                <HabitsContext.Provider value={{habits, setHabits}}>
+                <HabitsContext.Provider value={{habits, setHabits, thereIsHabits, setThereIsHabits}}>
                     <UserContext.Provider value={{userData, setUserData, token, setToken}}>
                         <Routes>
                             <Route path={"/"} element={<SingIn/>}/>

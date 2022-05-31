@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import UserContext from "./contexts/UserContext";
+import Habit from "./Habit";
+import HabitsContext from "./contexts/HabitsContext";
 
-export default function CreareHabtis(){
+export default function CreateHabits(){
 
-    const [thereIsHabits, setThereIsHabits] = useState(false);
+    const {token} = useContext(UserContext);
+
+    const {habits} = useContext(HabitsContext);
 
     return(
-        thereIsHabits?
-        <p>"Já tem aqui"</p>
+        (habits.length !== null)?
+            <Habit/>
         :
         <>
         <Message>
@@ -17,7 +23,9 @@ export default function CreareHabtis(){
     );
 }
 
+
 const Message = styled.div`
     font-size: 18px;
     color: #666666;
 `;
+
