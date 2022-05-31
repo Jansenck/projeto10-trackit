@@ -1,61 +1,128 @@
-import {useState} from 'react';
+import {useState, useContext, useEffect} from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 
 import Header from './Header';
 import Footer from './Footer';
 
+import HabitsContext from './contexts/HabitsContext';
 import check from '../image/check.png'
 
 
 export default function Today(){
 
+    const { habits, setHabits } = useContext(HabitsContext)
+
+    const serializedUsedData = localStorage.getItem("localUserData");
+    const localUserData = JSON.parse(serializedUsedData);
+
     const [saveButtonColor, setSaveButtonColor] = useState("#EBEBEB");
     const [validateButton, setValidateButton] = useState(false);
+    const [habitsToday, setHabitsToday] = useState([]);
 
-    function saveHabit(){
+    const config = {headers:{"Authorization": `Bearer ${localUserData.token}`}}
 
-        setValidateButton(!validateButton);
+    useEffect(()=> {
+        const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config);
 
-        console.log(validateButton)
+            promisse.then((response) => {
+
+                setHabitsToday(response.data);
+                    
+            });
+            promisse.catch(() => window.alert("deu ruim..."));
+
+    },[localUserData.token])
+
+
+    function checkIt(id, done){
+
         
-        if(validateButton === false){
-            
-            setSaveButtonColor("#8FC549");
-            return(
-    
-               <Check  saveButtonColor={saveButtonColor}/>
-            );
-        } else if(validateButton !== false){
-
-            setSaveButtonColor("#EBEBEB");
-            return(
-    
-               <Check  saveButtonColor={saveButtonColor}/>
-            );
-        }
+        done?
+            revertHabit(id)
+        :
+            saveHabit(id)
 
     }
 
+    function saveHabit(habitId){
+
+
+        const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId}/check`,null,config);
+
+        promisse.then(
+            () => {
+
+
+                const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config);
+
+                promisse.then((response) => {
+
+                    setHabitsToday(response.data);
+                    
+
+                        
+                });
+                promisse.catch(() => window.alert("deu ruim..."));
+            }
+        );
+
+    }
+
+    function revertHabit(habitId){
+
+
+
+        const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId}/uncheck`,null,config);
+
+        promisse.then(() => 
+
+
+        
+            {
+
+
+                const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config);
+
+                promisse.then((response) => {
+
+                    setHabitsToday(response.data);
+                        
+                });
+                promisse.catch(() => window.alert("deu ruim dentro..."));
+            }  
+        );
+        promisse.catch(() => window.alert("deu ruim na primeira..."));
+    }
+
     return(
-        <>  <Header/>
+        <>  
+            <Header/>
             <Date>
                 <h2>Segunda, 17/05</h2>
                 <p>Nenhuma hábito concluído ainda</p>
             </Date>
-            <ConfigureHabit>
-                <Habit>
-                    <HabitName>
-                        {'Nome do hábito'}
-                    </HabitName>
-                    <Days>
-                        <p>Sequência atual: 4 dias</p>
-                        <p>Seu recorde: 5 dias</p>
-                    </Days>
-                </Habit>
-                <Check saveButtonColor={saveButtonColor} onClick={saveHabit}>
-                    <img src={check} alt="check"/>
-                </Check>
-            </ConfigureHabit> 
+            {
+                habitsToday.map((habit)=>{
+                    return(
+                        <ConfigureHabit key={habit.id}>
+                            <Habit>
+                                <HabitName>
+                                    {habit.name}
+                                </HabitName>
+                                <Days >
+                                    <p>Sequência atual: {habit.currentSequence}</p>
+                                    <p>Seu recorde: {habit.highestSequence}</p>
+                                </Days>
+                            </Habit>
+                            <Check check={habit.done} key={habit.id} saveButtonColor={saveButtonColor} id={habit.id} onClick={()=> checkIt(habit.id, habit.done)}>
+                                <img src={check} alt="check"/>
+                            </Check>
+                        </ConfigureHabit>
+                    )
+                    
+                })
+            } 
             <Footer/>
         </>
     );
@@ -65,7 +132,8 @@ const Date = styled.div`
     height: 10vh;
     width: 100%;
 
-    margin-top: 12vh;
+    margin-bottom: 4vh;
+    margin-top: 15vh;
     box-sizing: border-box;
 
     display: flex;
@@ -123,10 +191,12 @@ const Days = styled.div`
 const Check = styled.button`
     height:100%;
     width: 70px;
-    background-color: ${props => props.saveButtonColor};
+    background-color: ${props => props.check ? "#8FC549" : "#E7E7E7"};
     border-radius: 5px;
 
     display: flex;
     justify-content: center;
     align-items: center;
 `;
+
+

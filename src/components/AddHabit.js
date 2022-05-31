@@ -67,8 +67,6 @@ export default function AddHabit(){
         
     }
 
-    // const weekDays = renderDays(selectedDays);
-
     return(
         <>
             <MyHabits>

@@ -13,6 +13,7 @@ export default function CreateHabits(){
 
     return(
         (habits.length !== null)?
+
             <Habit/>
         :
         <>
