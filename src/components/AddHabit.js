@@ -74,7 +74,7 @@ export default function AddHabit(){
                 <form onSubmit={buttonSave}>
                     <input key="name" type="text" placeholder="nome do hábito" onChange={(e) => setHabitName(e.target.value)} required/>
                     <Days>
-                        {days.map((day, index) => <DiaDaSemana toggleDay={toggleDay} index={index} day={day} />)}
+                        {days.map((day, index) => <DiaDaSemana key={index} toggleDay={toggleDay} index={index} day={day} />)}
                     </Days>
                 <Buttons>
                     <Cancel>Cancelar</Cancel>
@@ -90,7 +90,7 @@ function DiaDaSemana({toggleDay, day, index}) {
     const [selected, setSelected] = useState(false);
 
     return (
-        <Divao onClick={() => { setSelected(!selected); toggleDay(selected, index) }} selected={selected}>{day}</Divao>
+        <Divao key={index} onClick={() => { setSelected(!selected); toggleDay(selected, index) }} selected={selected}>{day}</Divao>
     )
 }
 
