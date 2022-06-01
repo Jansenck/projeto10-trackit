@@ -81,7 +81,7 @@ export default function SingIn(){
 }
 
 const Container = styled.div`
-    height: 20vh;
+    height: 22vh;
     width: 90%;
 
     display: flex;
@@ -94,17 +94,18 @@ const Container = styled.div`
 `;
 
 const Form = styled.form`
-    height: 65%;
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
         input{
-            height: 42%;
+            height: 28%;
+            width: 98%;
             border: 1px solid #D5D5D5;
             border-radius: 5px;
             font-size: 20px;
-            color:#DBDBDB;
+            color:#666666;
 
             //PARA DESABILITAR OS INPUTS
         }
@@ -116,8 +117,8 @@ const Form = styled.form`
 `;
 
 const Button = styled.button`
-    height: 6vh;
-    width: 80vw;
+    height: 28%;
+    width: 100%;
     background-color: #52B6FF;
     display:flex;
     justify-content: center;

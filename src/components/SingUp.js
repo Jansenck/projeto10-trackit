@@ -52,7 +52,7 @@ export default function SingUp(){
         <>
             <BigLogo/>
             <Container>
-                <form onSubmit={postUserData}>
+                <Form onSubmit={postUserData}>
                     <input type="email" required placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     <input type="password" required placeholder="senha"  value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <input type="text" required placeholder="nome"  value={name} onChange={(e) => setName(e.target.value)}/>
@@ -61,7 +61,7 @@ export default function SingUp(){
                 
                             {buttonContent}
                     </Button>
-                </form>
+                </Form>
             </Container>
             <Link to="/" style={{color: '#52B6FF'}}>
                 {"Já tem uma conta? Faça login!"}
@@ -71,7 +71,7 @@ export default function SingUp(){
 }
 
 const Container = styled.div`
-    height: 34vh;
+    height: 38.5vh;
     width: 90%;
 
     display: flex;
@@ -83,14 +83,14 @@ const Container = styled.div`
 `;
 
 const Form = styled.form`
-    height: 79%;
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
         input{
-            height: 20.5%;
+            height: 16%;
             border: 1px solid #D5D5D5;
             border-radius: 5px;
             font-size: 20px;
@@ -99,7 +99,7 @@ const Form = styled.form`
 `;
 
 const Button = styled.button`
-    height: 6vh;
+    height: 16%;
     width: 80vw;
     background-color: #52B6FF;
     font-size: 20px;
