@@ -1,11 +1,16 @@
 import {Link} from 'react-router-dom';
-import { CircularProgressbarWithChildren, buildStyles, CircularProgressbar } from 'react-circular-progressbar'
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import { CirclesWithBar } from 'react-loader-spinner';
 
 import styled from 'styled-components';
 import { CenturyView } from 'react-calendar';
+import { useContext } from 'react';
+import HabitsContext from './contexts/HabitsContext';
 
 export default function Footer(){
+
+    const {progress} = useContext(HabitsContext);
 
     return(
         <NavBar>
@@ -15,7 +20,7 @@ export default function Footer(){
             <div style={{ width: '100px', height: '100px'}}>
                 <Link to="/hoje" style={linkStyle}>
                     <CircularProgressbar
-                        value={60}
+                        value={progress}
                         text={'Hoje'}
                         background={true}
                         backgroundPadding={6} 

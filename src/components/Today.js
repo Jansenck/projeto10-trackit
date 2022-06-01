@@ -1,6 +1,8 @@
 import {useState, useContext, useEffect} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
 
 import Header from './Header';
 import Footer from './Footer';
@@ -11,28 +13,43 @@ import check from '../image/check.png'
 
 export default function Today(){
 
-    const { habits, setHabits } = useContext(HabitsContext)
+    dayjs.locale('pt-br');
+    const now = dayjs().format("dddd, DD/MM");
+
+    const { habits, setHabits, habitsToday, setHabitsToday } = useContext(HabitsContext);
+    const { habitsConcluded, setHabitsConcluded, progress, setProgress } = useContext(HabitsContext);
 
     const serializedUsedData = localStorage.getItem("localUserData");
     const localUserData = JSON.parse(serializedUsedData);
 
-    const [saveButtonColor, setSaveButtonColor] = useState("#EBEBEB");
     const [validateButton, setValidateButton] = useState(false);
-    const [habitsToday, setHabitsToday] = useState([]);
 
     const config = {headers:{"Authorization": `Bearer ${localUserData.token}`}}
+    
+    console.log(habitsConcluded)
+    console.log(habits)
 
+    
     useEffect(()=> {
+
         const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config);
 
             promisse.then((response) => {
 
                 setHabitsToday(response.data);
                     
+                    response.data.filter((habit)=>{
+
+                        if(habit.done){
+                            return(
+                                setHabitsConcluded([...habitsConcluded, habit])
+                            );   
+                        }        
+                    })                    
             });
             promisse.catch(() => window.alert("deu ruim..."));
 
-    },[localUserData.token])
+    },[])
 
 
     function checkIt(id, done){
@@ -47,19 +64,26 @@ export default function Today(){
 
     function saveHabit(habitId){
 
-
         const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId}/check`,null,config);
 
-        promisse.then(
-            () => {
-
-
+        promisse.then(() => {
+            
                 const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config);
 
                 promisse.then((response) => {
-
+                    
                     setHabitsToday(response.data);
                     
+                    response.data.filter((habit)=>{
+
+                        if(habit.done){
+                            return(
+                                setHabitsConcluded([...habitsConcluded, habit])
+
+
+                            );   
+                        } 
+                    })
 
                         
                 });
@@ -71,22 +95,28 @@ export default function Today(){
 
     function revertHabit(habitId){
 
-
-
         const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId}/uncheck`,null,config);
 
         promisse.then(() => 
-
-
         
             {
-
 
                 const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config);
 
                 promisse.then((response) => {
 
                     setHabitsToday(response.data);
+                    
+                    response.data.filter((habit)=>{
+
+                        if(habit.done){
+                            return(
+                                setHabitsConcluded([...habitsConcluded, habit])
+
+                            );   
+                        } 
+        
+                    })
                         
                 });
                 promisse.catch(() => window.alert("deu ruim dentro..."));
@@ -99,8 +129,8 @@ export default function Today(){
         <>  
             <Header/>
             <Date>
-                <h2>Segunda, 17/05</h2>
-                <p>Nenhuma hábito concluído ainda</p>
+                <h2>{now.charAt(0).toUpperCase() + now.slice(1)}</h2>
+                {progress}
             </Date>
             {
                 habitsToday.map((habit)=>{
@@ -115,7 +145,7 @@ export default function Today(){
                                     <p>Seu recorde: {habit.highestSequence}</p>
                                 </Days>
                             </Habit>
-                            <Check check={habit.done} key={habit.id} saveButtonColor={saveButtonColor} id={habit.id} onClick={()=> checkIt(habit.id, habit.done)}>
+                            <Check check={habit.done} key={habit.id} id={habit.id} onClick={()=> checkIt(habit.id, habit.done)}>
                                 <img src={check} alt="check"/>
                             </Check>
                         </ConfigureHabit>

@@ -17,15 +17,19 @@ export default function App(){
     const [userData, setUserData] = useState({});
     const[token, setToken] = useState(null);
     const [habits, setHabits] = useState([]);
-    const [thereIsHabits, setThereIsHabits] = useState(false);
+    const [habitsToday, setHabitsToday] = useState([]);
+    const [habitsConcluded, setHabitsConcluded] = useState([]);
+    const [progress, setProgress] = useState(0);
 
+    
 
     return(
 
         <Container>
             <BrowserRouter>
                 <GlobalStyle/>
-                <HabitsContext.Provider value={{habits, setHabits, thereIsHabits, setThereIsHabits}}>
+                <HabitsContext.Provider 
+                    value={{habits, setHabits,habitsToday, setHabitsToday, progress, setProgress, habitsConcluded, setHabitsConcluded}}>
                     <UserContext.Provider value={{userData, setUserData, token, setToken}}>
                         <Routes>
                             <Route path={"/"} element={<SingIn/>}/>

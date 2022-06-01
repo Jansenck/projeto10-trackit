@@ -21,14 +21,6 @@ export default function Day(props){
     )
 }
 
-
-
-function colorDay(selectedDay){
-    console.log('entrei em colorday')
-    if(selectedDay) return "#000"
-    else return "#FFFFFF"
-}
-
 const Button = styled.button`
     height: 100%;
     width: 100%;

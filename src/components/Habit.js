@@ -48,6 +48,7 @@ export default function Habit() {
                 const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
 
                 promisse.then((response) => {
+                    
                     setHabits(response.data);
                 
                 });

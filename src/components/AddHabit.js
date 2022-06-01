@@ -8,11 +8,8 @@ import HabitsContext from './contexts/HabitsContext';
 
 export default function AddHabit(){
     const [openForm, setOpenForm] = useState(false);
-    const [habitCreated, setHabitCreated] = useState(false);
 
     const [habitName, setHabitName] = useState('');
-    const [habitDays, setHabitDays] = useState([]);
-    const [newHabit, setNewHabit] = useState([]);
     const days = ["D", "S", "T", "Q", "Q", "S", "S"];
 
     const [selectedDays, setSelectedDays] = useState([]);
@@ -44,13 +41,12 @@ export default function AddHabit(){
         //:
             //setButtonContent(<ThreeDots color="#FFFFFF" height={80} width={80} />)
 
-        setNewHabit(body);
-
         const promisse = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', body, config);
 
-        promisse.then(() => {
+        promisse.then((res) => {
 
             setOpenForm(!openForm);
+
         });
         promisse.catch(() => setEnableButton(true));
 

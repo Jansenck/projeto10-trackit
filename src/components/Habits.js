@@ -1,10 +1,9 @@
-import {useState} from 'react';
-import styled from 'styled-components';
 
 import Header from "./Header";
 import CreateHabits from './CreateHabits';
 import Footer from "./Footer";
 import AddHabit from './AddHabit';
+import Histoty from "./History";
 
 export default function Habits(){
 
